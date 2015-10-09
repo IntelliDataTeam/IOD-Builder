@@ -1,0 +1,11 @@
+c:\users\quang\documents\visual studio 2013\Projects\IOD Builder\IOD Builder\bin\Debug\IOD Builder.exe.config
+C:\Users\Quang\documents\visual studio 2013\Projects\IOD Builder\IOD Builder\bin\Debug\IOD Builder.exe
+C:\Users\Quang\documents\visual studio 2013\Projects\IOD Builder\IOD Builder\bin\Debug\IOD Builder.pdb
+C:\Users\Quang\documents\visual studio 2013\Projects\IOD Builder\IOD Builder\bin\Debug\Excel.dll
+C:\Users\Quang\documents\visual studio 2013\Projects\IOD Builder\IOD Builder\bin\Debug\Excel.xml
+C:\Users\Quang\documents\visual studio 2013\Projects\IOD Builder\IOD Builder\obj\Debug\IOD Builder.csprojResolveAssemblyReference.cache
+C:\Users\Quang\documents\visual studio 2013\Projects\IOD Builder\IOD Builder\obj\Debug\IOD_Builder.Main.resources
+C:\Users\Quang\documents\visual studio 2013\Projects\IOD Builder\IOD Builder\obj\Debug\IOD_Builder.Properties.Resources.resources
+C:\Users\Quang\documents\visual studio 2013\Projects\IOD Builder\IOD Builder\obj\Debug\IOD Builder.csproj.GenerateResource.Cache
+C:\Users\Quang\documents\visual studio 2013\Projects\IOD Builder\IOD Builder\obj\Debug\IOD Builder.exe
+C:\Users\Quang\documents\visual studio 2013\Projects\IOD Builder\IOD Builder\obj\Debug\IOD Builder.pdb
