@@ -13,3 +13,21 @@ the macroes into a window application.<br/>
 <li>Still need to decide whether to hardcode the excel formulas0(easier) or make it read from a txt file(harder)</li>
 <li><b>Need to create a macro that will print out all of the worksheet's name in order for the config file.</b></li>
 </ui>
+<br/>
+<h2>Proposed Structure</h2>
+<h4>Load_Data</h4>
+<li>Parsed data from the IOD, storing each worksheet in its own List.</li>
+<li>Parsing data will required a good knowledge of the IOD structure so we can cut down on future patches.</li>
+<li>Can be very memory intensive as we are storing large amount of data.</li>
+<h4>Validation</h4>
+<li>Read from the Universe generated csv file line-by-line.</li>
+<li>Using logics and data parsed from the IOD, determine if the PN is valid.</li>
+<li>Write/Add the valid PN into a csv file, Valid PNs.</li>
+<li>Flush the memory once Validation is over to prevent resource hogging.</li>
+<h4>Load_Configs</h4>
+<li>Read the config files(lookup tables) into memory.</li>
+<h4>Population</h4>
+<li>Read from the Valid PNs file line-by-line</li>
+<li>Using logics and the config files to generate value for each columns.</li>
+<li>Write the PN into another csv file.</li>
+<li>Working line-by-line might be slower, but it cut down on memory hogging, though, could store a certain amount before writing.</li>
