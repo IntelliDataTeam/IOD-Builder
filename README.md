@@ -11,4 +11,5 @@ the macroes into a window application.<br/>
 <li>Currently, using a 3rd-party plugin that have very limited reading functionality
 <li>Can't get the worksheet name</li>
 <li>Still need to decide whether to hardcode the excel formulas0(easier) or make it read from a txt file(harder)</li>
+<li><b>Need to create a macro that will print out all of the worksheet's name in order for the config file.</b></li>
 </ui>
