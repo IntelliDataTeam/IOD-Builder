@@ -7,8 +7,8 @@ By removing excel we can improve the <b>performance and organization</b>. Also, 
 the macroes into a window application.<br/>
 <br/>
 <h2>Current Problems</h2>
-<li>
-<ui>Currently, using a 3rd-party plugin that have very limited reading functionality</ui>
-<ui>Can't get the worksheet name</ui>
-<ui>Still need to decide whether to hardcode the excel formulas0(easier) or make it read from a txt file(harder)</ui>
-</li>
+<ui>
+<li>Currently, using a 3rd-party plugin that have very limited reading functionality
+<li>Can't get the worksheet name</li>
+<li>Still need to decide whether to hardcode the excel formulas0(easier) or make it read from a txt file(harder)</li>
+</ui>
