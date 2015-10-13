@@ -1,6 +1,13 @@
 # IOD-Builder
 Life made easier
 
+<h2>Updates/Latest News</h2>
+<h4>10/13/2015</h4>
+<ui>
+<li>Exploring other libraries to parse excel data</li>
+<li>Current library is not sophisticated enough to be of use</li>
+</ui>
+
 <h2>Purpose</h2>
 The purpose of this project is to improve the KEMET CCS building process by moving away from excel.<br/>
 By removing excel we can improve the <b>performance and organization</b>. Also, it is much more user friendly to recreate <br/>
