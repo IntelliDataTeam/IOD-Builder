@@ -9,15 +9,41 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Threading;
 using System.Configuration;
-using Excel;
+using System.Xml;
+using OfficeOpenXml;
+using System.IO;
 
 namespace IOD_Builder
 {
+
     public partial class Main : Form
     {
+        class wSheet
+        {
+            public string id;
+            public string name;
+            public string type;
+        }
+
+        class Waterfall
+        {
+            public List<string> lookup;
+            public List<string> cap;
+            public List<List<string>> table;
+            public Waterfall()
+            {
+                lookup = new List<string>();
+                cap = new List<string>();
+                table = new List<List<string>>();
+            }
+        }
+
         #region Global Variables
         private BackgroundWorker minion = new BackgroundWorker();
         List<List<string>> pkgList;
+        List<Waterfall> serList;
+        List<wSheet> works;
+
         #endregion
 
         public Main()
@@ -31,20 +57,22 @@ namespace IOD_Builder
         #region backgroundworker
         void minion_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            foreach (List<string> l in pkgList)
-            {
-                Console.WriteLine(string.Join(",",l.ToArray()));
-            }
             cancelBtn.Text = "Cancel";
+            outputBox.Text = "Done.";
         }
 
         void minion_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
-           
+            progressBar.Value = e.ProgressPercentage;
+            percentOut.Text = e.ProgressPercentage.ToString() + "%";
         }
 
         void minion_DoWork(object sender, DoWorkEventArgs e)
         {
+            progressBar.Maximum = 100;
+            progressBar.Minimum = 0;
+            progressBar.Value = 0;
+            //xmlRdr();
             Load_Data();
         }
         #endregion
@@ -88,7 +116,7 @@ namespace IOD_Builder
                 outputBox.Text = "Building...";
                 cancelBtn.Text = "Stop";
                 minion.RunWorkerAsync();
-            }
+            } 
         }
 
         private void cancelBtn_Click(object sender, EventArgs e)
@@ -106,48 +134,95 @@ namespace IOD_Builder
         #region Internal Functions
         private void Load_Data()
         {
-            int count = 0;
             pkgList = new List<List<string>>();
-            //Need a config file that will identify the worksheet for the program.
-            foreach (worksheet ws in Workbook.Worksheets(filePath.Text))
+            serList = new List<Waterfall>();
+
+            FileInfo existingFile = new FileInfo(filePath.Text);
+            using (ExcelPackage package = new ExcelPackage(existingFile))
             {
-                switch(count) {
-                    case 0:
-                        SetPkgSpecs(ws);
-                    break;
-
-                    case 1:
-                        List<List<string>> c0g = new List<List<string>>();
-                        SetSeriesInfo(ws,c0g);
-                    break;
-
-                    default:
-                    break;
+                int max = package.Workbook.Worksheets.Count;
+                for (int x = 1; x <= max; x++)
+                {
+                    Console.WriteLine(x + " : " + package.Workbook.Worksheets[x].Name);
+                    minion.ReportProgress((x/max)*100);
                 }
-                count++;
             }
         }
 
-        private void SetPkgSpecs(worksheet ws)
+        private void SetPkgSpecs(ExcelWorksheet ws)
         {
             pkgList = new List<List<string>>();
             int r = 1;
 
-            while (ws.Rows[r].Cells[3] != null)
+            while (ws.Cells[r,3] != null)
             {
                 List<string> rowData = new List<string>();
                 for (int c = 3; c < 9; c++)
                 {
-                    rowData.Add(ws.Rows[r].Cells[c].Text);
+                    rowData.Add(ws.Cells[r,c].Text);
                 }
                 pkgList.Add(rowData);
                 r++;
             }
         }
 
-        private void SetSeriesInfo(worksheet ws, List<List<string>> series)
+        private Waterfall SetSeriesTable(ExcelWorksheet ws)
         {
-            
+            Waterfall waFa = new Waterfall();
+            int c = 1;
+            int r = 10;
+
+            // Adding Cap Range
+            while (ws.Cells[r,0] != null) {
+                waFa.cap.Add(ws.Cells[r,0].Text);
+                r++;
+            }
+            // Adding lookup values
+            while (ws.Cells[4,c] != null)
+            {
+                waFa.lookup.Add(ws.Cells[4,c].Text);
+                c++;
+            }
+            // Adding table values
+            int max = waFa.cap.Count * waFa.lookup.Count;
+            int count = 0;
+            for (int x = 1; x < waFa.lookup.Count + 1; x++)
+            {
+                List<string> temp = new List<string>();
+                for (int y = 10; y < waFa.cap.Count + 10; y++)
+                {
+                    if (ws.Cells[y,x] == null)
+                        temp.Add("");
+                    else
+                        temp.Add(ws.Cells[y,x].Text);
+                    count++;
+                    minion.ReportProgress(100 * (count / max));
+                }
+                waFa.table.Add(temp);
+            }
+            return waFa;
+        }
+
+        private void xmlRdr()
+        {
+            XmlDocument doc = new XmlDocument();
+            doc.Load(@"C:\Users\Quang\Documents\Configs\worksheets.xml");
+            XmlNodeList nodes = doc.DocumentElement.SelectNodes("/worksheets/worksheet");
+
+            works = new List<wSheet>();
+
+            foreach (XmlNode node in nodes)
+            {
+                wSheet ws = new wSheet();
+
+                ws.name = node.SelectSingleNode("name").InnerText;
+                ws.type = node.SelectSingleNode("type").InnerText;
+                ws.id = node.Attributes["id"].Value;
+
+                works.Add(ws);
+            }
+
+            System.Console.WriteLine("Total worksheets: " + works.Count);
         }
         #endregion
     }
