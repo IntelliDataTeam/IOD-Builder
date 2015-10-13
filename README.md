@@ -6,6 +6,7 @@ Life made easier
 <ui>
 <li>Exploring other libraries to parse excel data</li>
 <li>Current library is not sophisticated enough to be of use</li>
+<li>EPPlus seems like a good candidate as it is very feature packed</li>
 </ui>
 
 <h2>Purpose</h2>
